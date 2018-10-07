@@ -1,0 +1,29 @@
+TITLE: ECLSK two level linear growth model with fixed time scores and SES covariate
+
+DATA: file is y750_project.txt;
+
+VARIABLE: 
+	NAMES ARE childid s2_id t1read t2read t3read t4read ses;
+	MISSING = ALL (9999);
+	USEVAR = t1read t2read t3read t4read ses;
+	CLUSTER = s2_id;
+
+ANALYSIS: 
+	TYPE = TWOLEVEL;
+	!ESTIMATOR = MUML;
+	
+MODEL: 
+
+	%WITHIN%
+	iw sw | t1read@0 t2read@1 t3read t4read;
+	t1read-t4read (1);
+	iw sw ON ses;
+	
+	%BETWEEN%
+	ib sb | t1read@0 t2read@1 t3read t4read;
+	t1read-t4read (0);
+	ib sb ON ses;
+
+
+OUTPUT:
+	tech1 tech4 tech8 MODINDICES SAMPSTAT STANDARDIZED RESIDUAL;
