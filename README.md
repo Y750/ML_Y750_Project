@@ -2,5 +2,5 @@
 
 Simulation Study investigating the effect of different cluster sizes in a multilevel latent growth model
 # Contents
-# Simulation Data
+# Data
 # Code
