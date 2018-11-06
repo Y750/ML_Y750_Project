@@ -1,0 +1,52 @@
+TITLE: ECLSK two level linear growth model with fixed time scores and SES covariate
+
+DATA: file is y750_project1.txt;
+
+VARIABLE: 
+	NAMES ARE childid s2_id schoolid2 t1read t2read t3read t4read ses;
+	MISSING = ALL (9999);
+	USEVAR = t1read t2read t3read t4read ses;
+	CLUSTER = s2_id;
+
+ANALYSIS: 
+	TYPE = TWOLEVEL;
+	!ESTIMATOR = MUML;
+	
+MODEL: 
+
+	%WITHIN%
+	!iw sw | t1read@0 t2read@1 t3read*(1) t4read*2;
+	!t1read-t4read (1);
+	!iw sw ON ses;
+	
+	iw BY t1read-t4read@1;
+	sw BY t1read@0 t2read@1 t3read(1) 
+	t4read(2);
+	t1read (3)
+	t2read(3)
+	t3read(3)
+	t4read (3);
+	![t1read-t4read@0 iw sw];
+	iw sw ON ses;
+	
+	%BETWEEN%
+	!ib sb | t1read@0 t2read@1  t3read8(1)t4read*2;
+	!t1read-t4read (0);
+	!ib sb ON ses;
+
+	ib BY t1read-t4read@1;
+	sb BY t1read@0 t2read@1 t3read(1) 
+	t4read(2);
+	t1read (4)
+	t2read(4)
+	t3read(4)
+	t4read (4);
+	[t1read-t4read@0 ib sb];	
+	ib sb ON ses;
+
+
+OUTPUT:
+	tech1;
+
+SAVEDATA: Estimates=/Users/melissa/Documents/Box Sync/-Active/Classes Fa18/
+Y750 Adv SEM/ResearchProject/mplus_data_gen/templateExample/750estimates.dat;
