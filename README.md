@@ -1,9 +1,17 @@
 # Y750_Project
 
-Simulation Study investigating the effect of different cluster sizes in a multilevel latent growth model
+A simulation study investigating the effect of the number of clusters and cluster size in a multilevel latent growth curve model (MLGCM)
+
 ## Contents
-1. Data File
-2. Mplus input file for genearating population parameters 
-3. Text File to generate data and run simulations in Mplus
-4. R file to read text file through MplusAutomation and compile results
+
+### Data
+
+### Code
+Mplus input file for genearating population parameters 
+Text File to generate data and run simulations in Mplus
+R file to read text file through MplusAutomation and compile results
+
+
+### Reflection 
+
 
