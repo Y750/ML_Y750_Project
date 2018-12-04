@@ -1,0 +1,113 @@
+[[init]]
+iterators = model;
+model=1:12;
+modelnames#model = nc10cs15 nc10cs30 nc20cs15 nc20cs30
+				   nc100cs15 nc100cs30 nc200cs15 nc200cs30
+				   nc300cs15 nc300cs30 nc600cs15 nc600cs30;
+	
+title#model =   "Analysis using a MLGCM (NC10 and CS15)"
+				"Analysis using a MLGCM (NC10 and CS30)"
+				"Analysis using a MLGCM (NC20 and CS15)"
+				"Analysis using a MLGCM (NC20 and CS30)"
+				"Analysis using a MLGCM (NC100 and CS15)"
+				"Analysis using a MLGCM (NC100 and CS30)"
+				"Analysis using a MLGCM (NC200 and CS15)"
+				"Analysis using a MLGCM (NC200 and CS30)"
+				"Analysis using a MLGCM (NC300 and CS15)"
+				"Analysis using a MLGCM (NC300 and CS30)"
+				"Analysis using a MLGCM (NC600 and CS15)"
+				"Analysis using a MLGCM (NC600 and CS30)";
+
+nobservations#model = 150 300 300 600 1500 3000 3000
+					6000 4500 9000 9000	18000;
+					
+csizes#model = 10(15) 10(30) 20(15) 20(30) 100(15) 100(30) 
+				200(15) 200(30) 300(15) 300(30) 600(15) 600(30);
+filename = "[[modelnames#model]].inp";
+outputDirectory = y750project_1107;
+ [[/init]]
+ 
+TITLE: [[title#model]]
+MONTECARLO:
+NAMES ARE y1-y4 x;
+!MISSING = y1-y4;
+[[model>=1]]
+NOBSERVATIONS = [[nobservations#model]]; [[/model>=1]]
+NREPS = 500; 
+SEED = 58459;
+Patmiss = y1 (0.1) y2(0.15) y3(0.20) y4(0.25);
+patprob = 1;
+NCSIZES = 1;
+[[model>=1]]
+CSIZES = [[csizes#model]]; [[/model>=1]]
+REPSAVE = ALL;
+SAVE = [[modelnames#model]]_*.dat;
+Population = y750estimates.dat;
+Coverage = y750estimates.dat;	
+
+ANALYSIS: 
+
+TYPE = TWOLEVEL;
+
+ MODEL POPULATION:
+
+ %WITHIN%
+    iw BY y1-y4@1;
+	sw BY y1@0 y2@1 y3(1) 
+	y4(2);
+	y1 (3);
+	y2(3);
+	y3(3);
+	y4 (3);
+	iw sw ON x;
+	iw;
+	sw;
+	iw with sw;
+	
+	%BETWEEN%
+	ib BY y1-y4@1;
+	sb BY y1@0 y2@1 y3(1)
+	y4(2);
+	y1 (4);
+	y2(4);
+	y3(4);
+	y4(4);
+	[y1-y4@0 ib sb];	
+	ib sb ON x;
+
+	!MODEL MISSING:
+	![y1-y4@-1];
+	!y1 ON x*.4;
+	!y2 ON x*.8;
+	!y3 ON x*1.6;
+	!y4 ON x*3.2;
+
+  MODEL:
+
+     %WITHIN%
+	iw BY y1-y4@1;
+	sw BY y1@0 y2@1 y3(1) 
+	y4(2);
+	y1 (3);
+	y2(3);
+	y3(3);
+	y4 (3);
+	iw sw ON x;
+	iw;
+	sw;
+	iw with sw;
+	
+	%BETWEEN%
+	ib BY y1-y4@1;
+	sb BY y1@0 y2@1 y3(1)
+	y4(2);
+	y1 (4);
+	y2(4);
+	y3(4);
+	y4(4);
+	[y1-y4@0 ib sb];	
+	ib sb ON x;
+	!sb;
+	!ib with sb;
+
+OUTPUT:  TECH9;
