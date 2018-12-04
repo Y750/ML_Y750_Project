@@ -1,8 +1,8 @@
-# Fall 2018 Y750 Advanced Structural Equation Modeling Final Project
+# Fall 2018 Y750 Final Project
 
 A simulation study investigating the effect of the number of clusters and cluster size in a multilevel latent growth curve model (MLGCM)
 
-## Contents
+## Contents:
 
 ### Data
 
