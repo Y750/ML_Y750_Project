@@ -14,6 +14,6 @@ A simulation study investigating the effect of the number of clusters and cluste
 * R file to read text file through MplusAutomation and compile results
 
 
-### Reflection 
+### Project Reflection 
 
 
